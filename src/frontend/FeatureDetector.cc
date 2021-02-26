@@ -104,8 +104,8 @@ namespace ldso {
             }
         }
 
-        for (int i = 0; i < corners.size(); i++) {
-            for (int j = i + 1; j < corners.size(); j++) {
+        for (int i = 0; i < (int)corners.size(); i++) {
+            for (int j = i + 1; j < (int)corners.size(); j++) {
                 auto &feat1 = corners[i], feat2 = corners[j];
                 if ((feat1->uv - feat2->uv).norm() < 5) {
                     if (feat1->score > feat2->score)

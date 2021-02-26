@@ -112,7 +112,7 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 
 
     set(EXTRA_C_FLAGS_RELEASE "${EXTRA_C_FLAGS_RELEASE} -DNDEBUG   ")
-    set(EXTRA_C_FLAGS_DEBUG "-g3 -O0 -DDEBUG -D_DEBUG -W -Wextra -Wno-return-type   ")
+    set(EXTRA_C_FLAGS_DEBUG "-g3 -O0 -DDEBUG -D_DEBUG -W -Wno-deprecated  -Wno-deprecated-declarations -Wno-return-type   ")
 
     MESSAGE( STATUS "-------------------------------------------------------------------------------" )
     message( STATUS "GNU COMPILER")
