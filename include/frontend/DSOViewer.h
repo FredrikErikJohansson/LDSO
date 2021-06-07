@@ -147,6 +147,7 @@ namespace ldso {
         }
 
         void saveAsPLYFile(const string &file_name);
+        void saveCamPoses(const string &file_name);
 
     private:
 
