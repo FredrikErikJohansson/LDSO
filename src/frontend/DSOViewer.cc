@@ -573,7 +573,6 @@ namespace ldso {
             usleep(5000);
         }
 
-        printf("ALL FRAME POSES: %lu", allFramePoses.size());
         printf("QUIT Pangolin thread!\n");
         printf("So Long, and Thanks for All the Fish!\n");
     }
