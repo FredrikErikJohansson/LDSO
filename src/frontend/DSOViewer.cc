@@ -6,6 +6,7 @@
 #include "frontend/DSOViewer.h"
 #include "internal/GlobalCalib.h"
 #include "internal/ImmaturePoint.h"
+#include "iomanip"
 
 namespace ldso {
 

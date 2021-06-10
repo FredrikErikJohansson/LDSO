@@ -26,6 +26,7 @@ std::string source = "/media/gaoxiang/Data1/Dataset/TUM-MONO/sequence_31/";
 std::string calib = "/media/gaoxiang/Data1/Dataset/TUM-MONO/sequence_31/camera.txt";
 std::string output_file = "./results.txt";
 std::string vocPath = "./vocab/orbvoc.dbow3";
+std::string result = "sequence_50"; // ÄNDRA DENNA FÖR VARJE SEKVENS
 
 double rescale = 1;
 bool reversePlay = false;
@@ -58,7 +59,11 @@ void settingsDefault(int preset) {
         setting_maxOptIterations = 6;
         setting_minOptIterations = 1;
 
-        setting_logStuff = false;
+        //setting_enableLoopClosing = true;
+        //setting_pointSelection = 1;
+        //disableAllDisplay = true;
+        setting_logStuff = true;
+        printf(setting_logStuff ? "log stuff ON": "log stuff OFF");
     }
 
     if (preset == 2 || preset == 3) {
@@ -83,6 +88,29 @@ void settingsDefault(int preset) {
         benchmarkSetting_height = 320;
 
         setting_logStuff = false;
+    }
+
+    if (preset == 5) {
+        printf("THESIS settings:\n"
+               "- %s real-time enforcing\n"
+               "- 2000 active points\n"
+               "- 5-7 active frames\n"
+               "- 1-6 LM iteration each KF\n"
+               "- original image resolution\n", preset == 0 ? "no " : "1x");
+
+        playbackSpeed = (preset == 0 ? 0 : 1);
+        preload = preset == 1;
+        setting_desiredImmatureDensity = 1500;
+        setting_desiredPointDensity = 2000;
+        setting_minFrames = 5;
+        setting_maxFrames = 7;
+        setting_maxOptIterations = 6;
+        setting_minOptIterations = 1;
+
+        setting_enableLoopClosing = true;
+        setting_pointSelection = 1;
+        //disableAllDisplay = true;
+        setting_logStuff = true;
     }
 
     printf("==============================================\n");
@@ -204,6 +232,10 @@ void parseArgument(char *arg) {
     if (1 == sscanf(arg, "calib=%s", buf)) {
         calib = buf;
         printf("loading calibration from %s!\n", calib.c_str());
+        return;
+    }
+    if (1 == sscanf(arg, "result=%s", buf)) {
+        result = buf;
         return;
     }
 
@@ -449,7 +481,11 @@ int main(int argc, char **argv) {
                MilliSecondsTakenMT / (float) numFramesProcessed,
                1000 / (MilliSecondsTakenSingle / numSecondsProcessed),
                1000 / (MilliSecondsTakenMT / numSecondsProcessed));
+        
+        printf("\n Trying to print log stuff");
+        printf(setting_logStuff ? "log stuff ON BEFORE": "log stuff OFF BEFORE");
         if (setting_logStuff) {
+            printf("\n Printing log stuff to logs/time.txt");
             std::ofstream tmlog;
             tmlog.open("logs/time.txt", std::ios::trunc | std::ios::out);
             tmlog << 1000.0f * (ended - started) / (float) (CLOCKS_PER_SEC * reader->getNumImages()) << " "
@@ -465,7 +501,8 @@ int main(int argc, char **argv) {
 
     runthread.join();
 
-    viewer->saveAsPLYFile("./pointcloud.ply");
+    viewer->saveCamPoses(result + ".txt");
+    viewer->saveAsPLYFile(result + ".ply");
     LOG(INFO) << "EXIT NOW!";
     return 0;
 }
