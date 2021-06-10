@@ -684,4 +684,30 @@ namespace ldso {
         cout << "ply file is save to " << file_name << endl;
     }
 
+    void PangolinDSOViewer::saveCamPoses(const string &file_name) {
+        LOG(INFO) << "save cam poses to " << file_name;
+        ofstream fout(file_name);
+        fout << setprecision(15);
+        if (!fout) return;
+        unique_lock<mutex> lk3d(model3DMutex);
+        // count number of landmarks
+        int cnt_points = 0;
+        for (auto kf: keyframes) {
+            cnt_points += kf->numPoints();
+        }
+        LOG(INFO) << "cnt_points: " << cnt_points;
+        for (unsigned int i = 0; i < allFramePoses.size(); i++) {
+            shared_ptr<Frame> fr = allFramePoses[i];
+            SE3 Twc = fr->getPose().inverse();
+            fout << fr->timeStamp <<
+                   " " << Twc.translation().transpose() <<
+                   " " << Twc.so3().unit_quaternion().x() <<
+                   " " << Twc.so3().unit_quaternion().y() <<
+                   " " << Twc.so3().unit_quaternion().z() <<
+                   " " << Twc.so3().unit_quaternion().w() << "\n";
+        }
+        fout.close();
+        cout << "cam pose file is saved to " << file_name << endl;
+    }
+
 }

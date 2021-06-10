@@ -29,6 +29,7 @@ std::string source = "/home/xiang/Dataset/EUROC/MH_01_easy/cam0";
 std::string output_file = "./results.txt";
 std::string calib = "./examples/EUROC/EUROC.txt";
 std::string vocPath = "./vocab/orbvoc.dbow3";
+std::string result = "";
 
 int startIdx = 0;
 int endIdx = 100000;
@@ -212,6 +213,11 @@ void parseArgument(char *arg) {
     if (1 == sscanf(arg, "calib=%s", buf)) {
         calib = buf;
         printf("loading calibration from %s!\n", calib.c_str());
+        return;
+    }
+
+    if (1 == sscanf(arg, "result=%s", buf)) {
+        result = buf;
         return;
     }
 
@@ -430,12 +436,13 @@ int main(int argc, char **argv) {
         }
     });
 
-    if (viewer)
-        viewer->run();  // mac os should keep this in main thread.
+    // if (viewer)
+    //     viewer->run();  // mac os should keep this in main thread.
 
     runthread.join();
 
-
+    viewer->saveCamPoses(result + ".txt");
+    viewer->saveAsPLYFile(result + ".ply");
     LOG(INFO) << "EXIT NOW!";
     return 0;
 }

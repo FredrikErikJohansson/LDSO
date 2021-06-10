@@ -13,6 +13,7 @@
 #include <thread>
 #include <mutex>
 #include <pangolin/pangolin.h>
+#include <iomanip>
 
 using namespace std;
 
@@ -147,6 +148,8 @@ namespace ldso {
         }
 
         void saveAsPLYFile(const string &file_name);
+
+        void saveCamPoses(const string &file_name);
 
     private:
 

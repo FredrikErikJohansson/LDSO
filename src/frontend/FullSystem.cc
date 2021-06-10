@@ -1925,6 +1925,7 @@ namespace ldso {
         std::ofstream myfile(filename);
         myfile << std::setprecision(15);
 
+
         auto allKFs = globalMap->GetAllKFs();
         LOG(INFO) << "total keyframes: " << allKFs.size() << endl;
 
